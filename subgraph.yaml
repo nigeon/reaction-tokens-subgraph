@@ -1,0 +1,35 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ReactionFactory
+    network: goerli
+    source:
+      address: "0xFE512fC6A499e64d01e94A533F34616126d40E3D"
+      abi: ReactionFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - BeaconUpgraded
+        - Initialized
+        - ReactionDeployed
+        - Upgraded
+      abis:
+        - name: ReactionFactory
+          file: ./abis/ReactionFactory.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(address,address,address,address,string)
+          handler: handleInitialized
+        - event: ReactionDeployed(address,address,string,string)
+          handler: handleReactionDeployed
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/mapping.ts
