@@ -1,60 +1,55 @@
-import { BigInt } from "@graphprotocol/graph-ts"
-import {
-  ReactionFactory,
-  AdminChanged,
-  BeaconUpgraded,
-  Initialized,
-  ReactionDeployed,
-  Upgraded
-} from "../generated/ReactionFactory/ReactionFactory"
-import { ExampleEntity } from "../generated/schema"
+import { Address } from '@graphprotocol/graph-ts'
+import { ReactionDeployed } from "../generated/ReactionFactory/ReactionFactory"
+import { Staked, Reacted } from "../generated/templates/ReactionToken/ReactionToken"
+import { ReactionDef, Stake, Reaction, User } from "../generated/schema"
 
-export function handleAdminChanged(event: AdminChanged): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
+export function handleReactionDeployed(event: ReactionDeployed): void {
+  let entity = ReactionDef.load(event.transaction.from.toHex())
   if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+    entity = new ReactionDef(event.transaction.from.toHex())
   }
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
+  entity.user = createUser(event.params.creator).id;
+  entity.contract = event.params.reactionContractAddr;
+  entity.name = event.params.reactionTokenName;
+  entity.symbol = event.params.reactionTokenSymbol;
 
-  // Entity fields can be set based on event parameters
-  entity.previousAdmin = event.params.previousAdmin
-  entity.newAdmin = event.params.newAdmin
-
-  // Entities can be written to the store with `.save()`
   entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.deployReaction(...)
 }
 
-export function handleBeaconUpgraded(event: BeaconUpgraded): void {}
+export function handleStake(event: Staked): void {
+  let entity = Stake.load(event.transaction.from.toHex())
+  if (entity == null) {
+    entity = new Stake(event.transaction.from.toHex())
+  }
 
-export function handleInitialized(event: Initialized): void {}
+  entity.user = createUser(event.params.author).id;
+  entity.token = event.params.stakingTokenAddress;
+  entity.amount = event.params.amount;
+  
+  entity.save()
+}
 
-export function handleReactionDeployed(event: ReactionDeployed): void {}
+export function handleReacted(event: Reacted): void {
+  let entity = Reaction.load(event.transaction.from.toHex())
+  if (entity == null) {
+    entity = new Reaction(event.transaction.from.toHex())
+  }
 
-export function handleUpgraded(event: Upgraded): void {}
+  entity.user = createUser(event.params.author).id;
+  entity.reaction = ReactionDef.load(event.params.reactionTokenAddress.toHex()).id;
+  entity.amount = event.params.amount;
+  entity.nft = event.params.nftAddress;
+  
+  entity.save()
+}
+
+export function createUser(address: Address): User {
+  let user = User.load(address.toHexString())
+  if (user === null) {
+    user = new User(address.toHexString())
+    user.save()
+  }
+
+  return user;
+}
