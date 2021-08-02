@@ -2,6 +2,7 @@ import { Address } from '@graphprotocol/graph-ts'
 import { ReactionDeployed } from "../generated/ReactionFactory/ReactionFactory"
 import { Staked, Reacted } from "../generated/templates/ReactionToken/ReactionToken"
 import { ReactionDef, Stake, Reaction, User } from "../generated/schema"
+import { ReactionToken } from "../generated/templates"
 
 export function handleReactionDeployed(event: ReactionDeployed): void {
   let entity = ReactionDef.load(event.transaction.from.toHex())
@@ -15,6 +16,8 @@ export function handleReactionDeployed(event: ReactionDeployed): void {
   entity.symbol = event.params.reactionTokenSymbol;
 
   entity.save()
+
+  ReactionToken.create(event.params.reactionContractAddr);
 }
 
 export function handleStake(event: Staked): void {
