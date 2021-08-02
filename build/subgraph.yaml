@@ -4,32 +4,44 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ReactionFactory
-    network: goerli
+    network: mumbai
     source:
-      address: "0xFE512fC6A499e64d01e94A533F34616126d40E3D"
+      address: "0xEEe9e22957C763Bc7A48A9022E025B69d16F9589"
       abi: ReactionFactory
+      startBlock: 17135823
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - AdminChanged
-        - BeaconUpgraded
-        - Initialized
-        - ReactionDeployed
-        - Upgraded
+        - ReactionDef
       abis:
         - name: ReactionFactory
           file: ReactionFactory/abis/ReactionFactory.json
       eventHandlers:
-        - event: AdminChanged(address,address)
-          handler: handleAdminChanged
-        - event: BeaconUpgraded(indexed address)
-          handler: handleBeaconUpgraded
-        - event: Initialized(address,address,address,address,string)
-          handler: handleInitialized
         - event: ReactionDeployed(address,address,string,string)
           handler: handleReactionDeployed
-        - event: Upgraded(indexed address)
-          handler: handleUpgraded
+      file: ReactionFactory/ReactionFactory.wasm
+templates:
+  - kind: ethereum/contract
+    name: ReactionToken
+    network: mumbai
+    source:
+      abi: ReactionToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - Reaction
+        - Stake
+      abis:
+        - name: ReactionToken
+          file: ReactionToken/abis/ReactionToken.json
+      eventHandlers:
+        - event: Staked(address,uint256,address,address)
+          handler: handleStake
+        - event: Reacted(address,address,address,uint256,string,string)
+          handler: handleReacted
       file: ReactionFactory/ReactionFactory.wasm

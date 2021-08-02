@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ReactionFactory
-    network: goerli
+    network: mumbai
     source:
-      address: "0xFE512fC6A499e64d01e94A533F34616126d40E3D"
+      address: "0xEEe9e22957C763Bc7A48A9022E025B69d16F9589"
       abi: ReactionFactory
-      startBlock: 5179867
+      startBlock: 17135823
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -25,7 +25,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: ReactionToken
-    network: goerli
+    network: mumbai
     source:
       abi: ReactionToken
     mapping:

@@ -51,5 +51,5 @@ export function createUser(address: Address): User {
     user.save()
   }
 
-  return user;
+  return user as User;
 }

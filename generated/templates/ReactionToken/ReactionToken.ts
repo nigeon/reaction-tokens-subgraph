@@ -198,29 +198,6 @@ export class ReactionToken extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  createSuperToken(_token: Address): Address {
-    let result = super.call(
-      "createSuperToken",
-      "createSuperToken(address):(address)",
-      [ethereum.Value.fromAddress(_token)]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_createSuperToken(_token: Address): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "createSuperToken",
-      "createSuperToken(address):(address)",
-      [ethereum.Value.fromAddress(_token)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   decimals(): i32 {
     let result = super.call("decimals", "decimals():(uint8)", []);
 
@@ -268,27 +245,27 @@ export class ReactionToken extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  getSuperToken(_token: Address): Address {
+  getTokenMetadataURI(): string {
     let result = super.call(
-      "getSuperToken",
-      "getSuperToken(address):(address)",
-      [ethereum.Value.fromAddress(_token)]
+      "getTokenMetadataURI",
+      "getTokenMetadataURI():(string)",
+      []
     );
 
-    return result[0].toAddress();
+    return result[0].toString();
   }
 
-  try_getSuperToken(_token: Address): ethereum.CallResult<Address> {
+  try_getTokenMetadataURI(): ethereum.CallResult<string> {
     let result = super.tryCall(
-      "getSuperToken",
-      "getSuperToken(address):(address)",
-      [ethereum.Value.fromAddress(_token)]
+      "getTokenMetadataURI",
+      "getTokenMetadataURI():(string)",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toString());
   }
 
   increaseAllowance(spender: Address, addedValue: BigInt): boolean {
@@ -316,25 +293,6 @@ export class ReactionToken extends ethereum.SmartContract {
         ethereum.Value.fromUnsignedBigInt(addedValue)
       ]
     );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  isSuperToken(_token: Address): boolean {
-    let result = super.call("isSuperToken", "isSuperToken(address):(bool)", [
-      ethereum.Value.fromAddress(_token)
-    ]);
-
-    return result[0].toBoolean();
-  }
-
-  try_isSuperToken(_token: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall("isSuperToken", "isSuperToken(address):(bool)", [
-      ethereum.Value.fromAddress(_token)
-    ]);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -464,31 +422,31 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get host(): Address {
+  get reactionFactory(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get cfa(): Address {
+  get host(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get superTokenFactory(): Address {
+  get cfa(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get resolver(): Address {
+  get superTokenFactory(): Address {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get version(): string {
+  get reactionTokenName(): string {
     return this._call.inputValues[4].value.toString();
   }
 
-  get reactionTokenName(): string {
+  get reactionTokenSymbol(): string {
     return this._call.inputValues[5].value.toString();
   }
 
-  get reactionTokenSymbol(): string {
+  get tokenMetadataURI(): string {
     return this._call.inputValues[6].value.toString();
   }
 }
@@ -536,40 +494,6 @@ export class ApproveCall__Outputs {
 
   get value0(): boolean {
     return this._call.outputValues[0].value.toBoolean();
-  }
-}
-
-export class CreateSuperTokenCall extends ethereum.Call {
-  get inputs(): CreateSuperTokenCall__Inputs {
-    return new CreateSuperTokenCall__Inputs(this);
-  }
-
-  get outputs(): CreateSuperTokenCall__Outputs {
-    return new CreateSuperTokenCall__Outputs(this);
-  }
-}
-
-export class CreateSuperTokenCall__Inputs {
-  _call: CreateSuperTokenCall;
-
-  constructor(call: CreateSuperTokenCall) {
-    this._call = call;
-  }
-
-  get _token(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class CreateSuperTokenCall__Outputs {
-  _call: CreateSuperTokenCall;
-
-  constructor(call: CreateSuperTokenCall) {
-    this._call = call;
-  }
-
-  get superToken(): Address {
-    return this._call.outputValues[0].value.toAddress();
   }
 }
 

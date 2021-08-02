@@ -1,6 +1,30 @@
-type ExampleEntity @entity {
+type User @entity {
   id: ID!
-  count: BigInt!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
+  address: Bytes! # address
+  reactionsDefined: [ReactionDef!] @derivedFrom(field: "user")
+  staked: [Stake!] @derivedFrom(field: "user")
+  reactions: [Reaction!]  @derivedFrom(field: "user")
+}
+
+type ReactionDef @entity {
+  id: ID!
+  user: User!
+  contract: Bytes! # address
+  name: String!
+  symbol: String!
+}
+
+type Stake @entity {
+  id: ID!
+  user: User!
+  token: Bytes! # address
+  amount: BigInt!
+}
+
+type Reaction @entity {
+  id: ID!
+  user: User!
+  reaction: ReactionDef!
+  amount: BigInt!
+  nft: Bytes! # address
 }
