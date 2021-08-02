@@ -19,7 +19,7 @@ dataSources:
         - name: ReactionFactory
           file: ./abis/ReactionFactory.json
       eventHandlers:
-        - event: ReactionDeployed(address,address,string,string)
+        - event: ReactionDeployed(address,address,string,string,string)
           handler: handleReactionDeployed
       file: ./src/mapping.ts
 templates:

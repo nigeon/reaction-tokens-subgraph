@@ -19,7 +19,7 @@ dataSources:
         - name: ReactionFactory
           file: ReactionFactory/abis/ReactionFactory.json
       eventHandlers:
-        - event: ReactionDeployed(address,address,string,string)
+        - event: ReactionDeployed(address,address,string,string,string)
           handler: handleReactionDeployed
       file: ReactionFactory/ReactionFactory.wasm
 templates:

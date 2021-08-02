@@ -48,6 +48,7 @@ export function createUser(address: Address): User {
   let user = User.load(address.toHexString())
   if (user === null) {
     user = new User(address.toHexString())
+    user.address = address;
     user.save()
   }
 

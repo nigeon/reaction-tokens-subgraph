@@ -112,6 +112,10 @@ export class ReactionDeployed__Params {
   get reactionTokenSymbol(): string {
     return this._event.parameters[3].value.toString();
   }
+
+  get tokenMetadataURI(): string {
+    return this._event.parameters[4].value.toString();
+  }
 }
 
 export class Upgraded extends ethereum.Event {
@@ -137,16 +141,41 @@ export class ReactionFactory extends ethereum.SmartContract {
     return new ReactionFactory("ReactionFactory", address);
   }
 
+  createSuperToken(_token: Address): Address {
+    let result = super.call(
+      "createSuperToken",
+      "createSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_createSuperToken(_token: Address): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "createSuperToken",
+      "createSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   deployReaction(
     reactionTokenName: string,
-    reactionTokenSymbol: string
+    reactionTokenSymbol: string,
+    tokenMetadataURI: string
   ): Address {
     let result = super.call(
       "deployReaction",
-      "deployReaction(string,string):(address)",
+      "deployReaction(string,string,string):(address)",
       [
         ethereum.Value.fromString(reactionTokenName),
-        ethereum.Value.fromString(reactionTokenSymbol)
+        ethereum.Value.fromString(reactionTokenSymbol),
+        ethereum.Value.fromString(tokenMetadataURI)
       ]
     );
 
@@ -155,14 +184,16 @@ export class ReactionFactory extends ethereum.SmartContract {
 
   try_deployReaction(
     reactionTokenName: string,
-    reactionTokenSymbol: string
+    reactionTokenSymbol: string,
+    tokenMetadataURI: string
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "deployReaction",
-      "deployReaction(string,string):(address)",
+      "deployReaction(string,string,string):(address)",
       [
         ethereum.Value.fromString(reactionTokenName),
-        ethereum.Value.fromString(reactionTokenSymbol)
+        ethereum.Value.fromString(reactionTokenSymbol),
+        ethereum.Value.fromString(tokenMetadataURI)
       ]
     );
     if (result.reverted) {
@@ -170,6 +201,105 @@ export class ReactionFactory extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getSuperToken(_token: Address): Address {
+    let result = super.call(
+      "getSuperToken",
+      "getSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getSuperToken(_token: Address): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getSuperToken",
+      "getSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  isSuperToken(_token: Address): boolean {
+    let result = super.call("isSuperToken", "isSuperToken(address):(bool)", [
+      ethereum.Value.fromAddress(_token)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_isSuperToken(_token: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isSuperToken", "isSuperToken(address):(bool)", [
+      ethereum.Value.fromAddress(_token)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  superTokenRegistry(param0: Address): Address {
+    let result = super.call(
+      "superTokenRegistry",
+      "superTokenRegistry(address):(address)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_superTokenRegistry(param0: Address): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "superTokenRegistry",
+      "superTokenRegistry(address):(address)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+}
+
+export class CreateSuperTokenCall extends ethereum.Call {
+  get inputs(): CreateSuperTokenCall__Inputs {
+    return new CreateSuperTokenCall__Inputs(this);
+  }
+
+  get outputs(): CreateSuperTokenCall__Outputs {
+    return new CreateSuperTokenCall__Outputs(this);
+  }
+}
+
+export class CreateSuperTokenCall__Inputs {
+  _call: CreateSuperTokenCall;
+
+  constructor(call: CreateSuperTokenCall) {
+    this._call = call;
+  }
+
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class CreateSuperTokenCall__Outputs {
+  _call: CreateSuperTokenCall;
+
+  constructor(call: CreateSuperTokenCall) {
+    this._call = call;
+  }
+
+  get superToken(): Address {
+    return this._call.outputValues[0].value.toAddress();
   }
 }
 
@@ -196,6 +326,10 @@ export class DeployReactionCall__Inputs {
 
   get reactionTokenSymbol(): string {
     return this._call.inputValues[1].value.toString();
+  }
+
+  get tokenMetadataURI(): string {
+    return this._call.inputValues[2].value.toString();
   }
 }
 

@@ -94,6 +94,12 @@
         "internalType": "string",
         "name": "reactionTokenSymbol",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "tokenMetadataURI",
+        "type": "string"
       }
     ],
     "name": "ReactionDeployed",
@@ -115,6 +121,25 @@
   {
     "inputs": [
       {
+        "internalType": "contract ERC20WithTokenInfo",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "createSuperToken",
+    "outputs": [
+      {
+        "internalType": "contract ISuperToken",
+        "name": "superToken",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "reactionTokenName",
         "type": "string"
@@ -122,6 +147,11 @@
       {
         "internalType": "string",
         "name": "reactionTokenSymbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenMetadataURI",
         "type": "string"
       }
     ],
@@ -134,6 +164,25 @@
       }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ERC20WithTokenInfo",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "getSuperToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -167,6 +216,44 @@
     "name": "initialize",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ERC20WithTokenInfo",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "isSuperToken",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "superTokenRegistry",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
