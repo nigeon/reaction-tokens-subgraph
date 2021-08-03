@@ -1,23 +1,24 @@
-import { Address } from '@graphprotocol/graph-ts'
+import { Address, DataSourceContext } from '@graphprotocol/graph-ts'
 import { ReactionDeployed } from "../generated/ReactionFactory/ReactionFactory"
 import { Staked, Reacted } from "../generated/templates/ReactionToken/ReactionToken"
 import { ReactionDef, Stake, Reaction, User } from "../generated/schema"
-import { ReactionToken } from "../generated/templates"
+import { ReactionToken as ReactionTokenTemplate } from "../generated/templates"
 
 export function handleReactionDeployed(event: ReactionDeployed): void {
-  let entity = ReactionDef.load(event.transaction.from.toHex())
+  let entity = ReactionDef.load(event.params.reactionContractAddr.toHex())
   if (entity == null) {
-    entity = new ReactionDef(event.transaction.from.toHex())
+    entity = new ReactionDef(event.params.reactionContractAddr.toHex())
   }
-
+  
   entity.user = createUser(event.params.creator).id;
   entity.contract = event.params.reactionContractAddr;
   entity.name = event.params.reactionTokenName;
   entity.symbol = event.params.reactionTokenSymbol;
-
   entity.save()
 
-  ReactionToken.create(event.params.reactionContractAddr);
+  let context = new DataSourceContext();
+  context.setBytes('contract', event.params.reactionContractAddr)
+  ReactionTokenTemplate.createWithContext(event.params.reactionContractAddr, context);
 }
 
 export function handleStake(event: Staked): void {
@@ -39,8 +40,10 @@ export function handleReacted(event: Reacted): void {
     entity = new Reaction(event.transaction.from.toHex())
   }
 
+  let reactionDef = ReactionDef.load(event.params.reactionTokenAddress.toHex());
+
   entity.user = createUser(event.params.author).id;
-  entity.reaction = ReactionDef.load(event.params.reactionTokenAddress.toHex()).id;
+  entity.reaction = reactionDef.id;
   entity.amount = event.params.amount;
   entity.nft = event.params.nftAddress;
   
