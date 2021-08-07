@@ -296,4 +296,13 @@ export class Reaction extends Entity {
   set nft(value: Bytes) {
     this.set("nft", Value.fromBytes(value));
   }
+
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
 }

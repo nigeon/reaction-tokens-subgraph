@@ -46,6 +46,7 @@ export function handleReacted(event: Reacted): void {
   entity.reaction = reactionDef.id;
   entity.amount = event.params.amount;
   entity.nft = event.params.nftAddress;
+  entity.tokenId = event.params.tokenId;
   
   entity.save()
 }

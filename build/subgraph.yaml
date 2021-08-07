@@ -6,9 +6,9 @@ dataSources:
     name: ReactionFactory
     network: mumbai
     source:
-      address: "0xEEe9e22957C763Bc7A48A9022E025B69d16F9589"
+      address: "0xB693c88b74304BE463A25062796EF65cC5c0A797"
       abi: ReactionFactory
-      startBlock: 17135823
+      startBlock: 17331620
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -42,6 +42,6 @@ templates:
       eventHandlers:
         - event: Staked(address,uint256,address,address)
           handler: handleStake
-        - event: Reacted(address,address,address,uint256,string,string)
+        - event: Reacted(address,address,uint256,address,uint256,string,string)
           handler: handleReacted
       file: ReactionFactory/ReactionFactory.wasm

@@ -27,4 +27,5 @@ type Reaction @entity {
   reaction: ReactionDef!
   amount: BigInt!
   nft: Bytes! # address
+  tokenId: BigInt!
 }

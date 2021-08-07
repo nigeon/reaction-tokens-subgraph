@@ -82,6 +82,12 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "reactionTokenAddress",
         "type": "address"
@@ -334,6 +340,11 @@
         "internalType": "address",
         "name": "nftAddress",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "name": "stakeAndMint",
