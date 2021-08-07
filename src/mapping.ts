@@ -22,9 +22,9 @@ export function handleReactionDeployed(event: ReactionDeployed): void {
 }
 
 export function handleStake(event: Staked): void {
-  let entity = Stake.load(event.transaction.from.toHex())
+  let entity = Stake.load(event.transaction.hash.toHex())
   if (entity == null) {
-    entity = new Stake(event.transaction.from.toHex())
+    entity = new Stake(event.transaction.hash.toHex())
   }
 
   entity.user = createUser(event.params.author).id;
@@ -35,9 +35,9 @@ export function handleStake(event: Staked): void {
 }
 
 export function handleReacted(event: Reacted): void {
-  let entity = Reaction.load(event.transaction.from.toHex())
+  let entity = Reaction.load(event.transaction.hash.toHex())
   if (entity == null) {
-    entity = new Reaction(event.transaction.from.toHex())
+    entity = new Reaction(event.transaction.hash.toHex())
   }
 
   let reactionDef = ReactionDef.load(event.params.reactionTokenAddress.toHex());
