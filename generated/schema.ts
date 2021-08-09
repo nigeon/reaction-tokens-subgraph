@@ -229,6 +229,15 @@ export class Stake extends Entity {
   set amount(value: BigInt) {
     this.set("amount", Value.fromBigInt(value));
   }
+
+  get reaction(): string {
+    let value = this.get("reaction");
+    return value.toString();
+  }
+
+  set reaction(value: string) {
+    this.set("reaction", Value.fromString(value));
+  }
 }
 
 export class Reaction extends Entity {
@@ -304,5 +313,22 @@ export class Reaction extends Entity {
 
   set tokenId(value: BigInt) {
     this.set("tokenId", Value.fromBigInt(value));
+  }
+
+  get staked(): Array<string> | null {
+    let value = this.get("staked");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set staked(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("staked");
+    } else {
+      this.set("staked", Value.fromStringArray(value as Array<string>));
+    }
   }
 }

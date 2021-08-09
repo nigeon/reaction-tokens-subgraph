@@ -19,6 +19,7 @@ type Stake @entity {
   user: User!
   token: Bytes! # address
   amount: BigInt!
+  reaction: Reaction!
 }
 
 type Reaction @entity {
@@ -28,4 +29,5 @@ type Reaction @entity {
   amount: BigInt!
   nft: Bytes! # address
   tokenId: BigInt!
+  staked: [Stake!] @derivedFrom(field: "reaction")
 }

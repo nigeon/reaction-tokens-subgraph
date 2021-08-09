@@ -30,7 +30,8 @@ export function handleStake(event: Staked): void {
   entity.user = createUser(event.params.author).id;
   entity.token = event.params.stakingTokenAddress;
   entity.amount = event.params.amount;
-  
+  entity.reaction = event.transaction.hash.toHex();
+
   entity.save()
 }
 
