@@ -19,3 +19,17 @@ export class ReactionToken extends DataSourceTemplate {
     );
   }
 }
+
+export class StakedFlow extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("StakedFlow", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "StakedFlow",
+      [address.toHex()],
+      context
+    );
+  }
+}

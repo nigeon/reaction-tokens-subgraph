@@ -36,6 +36,40 @@ export class Approval__Params {
   }
 }
 
+export class Flowed extends ethereum.Event {
+  get params(): Flowed__Params {
+    return new Flowed__Params(this);
+  }
+}
+
+export class Flowed__Params {
+  _event: Flowed;
+
+  constructor(event: Flowed) {
+    this._event = event;
+  }
+
+  get flow(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get stakingTokenAddress(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get recipient(): Address {
+    return this._event.parameters[3].value.toAddress();
+  }
+
+  get stakingSuperTokenAddress(): Address {
+    return this._event.parameters[4].value.toAddress();
+  }
+}
+
 export class Reacted extends ethereum.Event {
   get params(): Reacted__Params {
     return new Reacted__Params(this);
@@ -101,10 +135,6 @@ export class Staked__Params {
 
   get stakingTokenAddress(): Address {
     return this._event.parameters[2].value.toAddress();
-  }
-
-  get stakingSuperTokenAddress(): Address {
-    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -430,28 +460,24 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get host(): Address {
+  get sfHost(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get cfa(): Address {
+  get sfCfa(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get superTokenFactory(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
   get reactionTokenName(): string {
-    return this._call.inputValues[4].value.toString();
+    return this._call.inputValues[3].value.toString();
   }
 
   get reactionTokenSymbol(): string {
-    return this._call.inputValues[5].value.toString();
+    return this._call.inputValues[4].value.toString();
   }
 
   get tokenMetadataURI(): string {
-    return this._call.inputValues[6].value.toString();
+    return this._call.inputValues[5].value.toString();
   }
 }
 

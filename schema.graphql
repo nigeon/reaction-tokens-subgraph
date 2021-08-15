@@ -4,6 +4,7 @@ type User @entity {
   reactionsDefined: [ReactionDef!] @derivedFrom(field: "user")
   staked: [Stake!] @derivedFrom(field: "user")
   reactions: [Reaction!]  @derivedFrom(field: "user")
+  flowed: [Flow!]  @derivedFrom(field: "recipient")
 }
 
 type ReactionDef @entity {
@@ -30,4 +31,23 @@ type Reaction @entity {
   nft: Bytes! # address
   tokenId: BigInt!
   staked: [Stake!] @derivedFrom(field: "reaction")
+  flowed: [Flow!] @derivedFrom(field: "reaction")
+}
+
+type Flow @entity {
+  id: ID!
+  amount: BigInt!
+  stakingTokenAddress: Bytes!
+  recipient: User!
+  stakingSuperTokenAddress: Bytes!
+  reaction: Reaction!
+  stakedFlow: StakedFlow!
+}
+
+type StakedFlow @entity {
+  id: ID!
+  stakingSuperToken: Bytes
+  balance: BigInt
+  recipient: User
+  flowRate: BigInt
 }

@@ -6,9 +6,9 @@ dataSources:
     name: ReactionFactory
     network: mumbai
     source:
-      address: "0xB693c88b74304BE463A25062796EF65cC5c0A797"
+      address: "0x1EC422B81f33F5FEb1CADf0F19aCD6988dc1d873"
       abi: ReactionFactory
-      startBlock: 17331620
+      startBlock: 17683984
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -36,12 +36,33 @@ templates:
         - User
         - Reaction
         - Stake
+        - Flow
       abis:
         - name: ReactionToken
           file: ./abis/ReactionToken.json
       eventHandlers:
-        - event: Staked(address,uint256,address,address)
+        - event: Staked(address,uint256,address)
           handler: handleStake
         - event: Reacted(address,address,uint256,address,uint256,string,string)
           handler: handleReacted
+        - event: Flowed(address,uint256,address,address,address)
+          handler: handleFlowed
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: StakedFlow
+    network: mumbai
+    source:
+      abi: StakedFlow
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - StakedFlow
+      abis:
+        - name: StakedFlow
+          file: ./abis/StakedFlow.json
+      eventHandlers:
+        - event: Flowing(address,uint256,address,uint256)
+          handler: handleFlowing
       file: ./src/mapping.ts

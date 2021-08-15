@@ -104,6 +104,23 @@ export class User extends Entity {
       this.set("reactions", Value.fromStringArray(value as Array<string>));
     }
   }
+
+  get flowed(): Array<string> | null {
+    let value = this.get("flowed");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set flowed(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("flowed");
+    } else {
+      this.set("flowed", Value.fromStringArray(value as Array<string>));
+    }
+  }
 }
 
 export class ReactionDef extends Entity {
@@ -329,6 +346,207 @@ export class Reaction extends Entity {
       this.unset("staked");
     } else {
       this.set("staked", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get flowed(): Array<string> | null {
+    let value = this.get("flowed");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set flowed(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("flowed");
+    } else {
+      this.set("flowed", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class Flow extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Flow entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Flow entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Flow", id.toString(), this);
+  }
+
+  static load(id: string): Flow | null {
+    return store.get("Flow", id) as Flow | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get stakingTokenAddress(): Bytes {
+    let value = this.get("stakingTokenAddress");
+    return value.toBytes();
+  }
+
+  set stakingTokenAddress(value: Bytes) {
+    this.set("stakingTokenAddress", Value.fromBytes(value));
+  }
+
+  get recipient(): string {
+    let value = this.get("recipient");
+    return value.toString();
+  }
+
+  set recipient(value: string) {
+    this.set("recipient", Value.fromString(value));
+  }
+
+  get stakingSuperTokenAddress(): Bytes {
+    let value = this.get("stakingSuperTokenAddress");
+    return value.toBytes();
+  }
+
+  set stakingSuperTokenAddress(value: Bytes) {
+    this.set("stakingSuperTokenAddress", Value.fromBytes(value));
+  }
+
+  get reaction(): string {
+    let value = this.get("reaction");
+    return value.toString();
+  }
+
+  set reaction(value: string) {
+    this.set("reaction", Value.fromString(value));
+  }
+
+  get stakedFlow(): string {
+    let value = this.get("stakedFlow");
+    return value.toString();
+  }
+
+  set stakedFlow(value: string) {
+    this.set("stakedFlow", Value.fromString(value));
+  }
+}
+
+export class StakedFlow extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save StakedFlow entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save StakedFlow entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("StakedFlow", id.toString(), this);
+  }
+
+  static load(id: string): StakedFlow | null {
+    return store.get("StakedFlow", id) as StakedFlow | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get stakingSuperToken(): Bytes | null {
+    let value = this.get("stakingSuperToken");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set stakingSuperToken(value: Bytes | null) {
+    if (value === null) {
+      this.unset("stakingSuperToken");
+    } else {
+      this.set("stakingSuperToken", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get balance(): BigInt | null {
+    let value = this.get("balance");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set balance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("balance");
+    } else {
+      this.set("balance", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get recipient(): string | null {
+    let value = this.get("recipient");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set recipient(value: string | null) {
+    if (value === null) {
+      this.unset("recipient");
+    } else {
+      this.set("recipient", Value.fromString(value as string));
+    }
+  }
+
+  get flowRate(): BigInt | null {
+    let value = this.get("flowRate");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set flowRate(value: BigInt | null) {
+    if (value === null) {
+      this.unset("flowRate");
+    } else {
+      this.set("flowRate", Value.fromBigInt(value as BigInt));
     }
   }
 }
