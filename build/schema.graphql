@@ -50,4 +50,5 @@ type StakedFlow @entity {
   balance: BigInt
   recipient: User
   flowRate: BigInt
+  flowed: [Flow!] @derivedFrom(field: "stakedFlow")
 }

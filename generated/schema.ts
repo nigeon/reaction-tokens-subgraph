@@ -549,4 +549,21 @@ export class StakedFlow extends Entity {
       this.set("flowRate", Value.fromBigInt(value as BigInt));
     }
   }
+
+  get flowed(): Array<string> | null {
+    let value = this.get("flowed");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set flowed(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("flowed");
+    } else {
+      this.set("flowed", Value.fromStringArray(value as Array<string>));
+    }
+  }
 }
