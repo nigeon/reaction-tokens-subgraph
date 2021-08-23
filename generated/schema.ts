@@ -188,6 +188,15 @@ export class ReactionDef extends Entity {
   set symbol(value: string) {
     this.set("symbol", Value.fromString(value));
   }
+
+  get stakingTokenAddress(): Bytes {
+    let value = this.get("stakingTokenAddress");
+    return value.toBytes();
+  }
+
+  set stakingTokenAddress(value: Bytes) {
+    this.set("stakingTokenAddress", Value.fromBytes(value));
+  }
 }
 
 export class Stake extends Entity {
@@ -314,13 +323,13 @@ export class Reaction extends Entity {
     this.set("amount", Value.fromBigInt(value));
   }
 
-  get nft(): Bytes {
-    let value = this.get("nft");
+  get reactionRecipientAddress(): Bytes {
+    let value = this.get("reactionRecipientAddress");
     return value.toBytes();
   }
 
-  set nft(value: Bytes) {
-    this.set("nft", Value.fromBytes(value));
+  set reactionRecipientAddress(value: Bytes) {
+    this.set("reactionRecipientAddress", Value.fromBytes(value));
   }
 
   get tokenId(): BigInt {

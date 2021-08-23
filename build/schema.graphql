@@ -13,6 +13,7 @@ type ReactionDef @entity {
   contract: Bytes! # address
   name: String!
   symbol: String!
+  stakingTokenAddress: Bytes!
 }
 
 type Stake @entity {
@@ -28,7 +29,7 @@ type Reaction @entity {
   user: User!
   reaction: ReactionDef!
   amount: BigInt!
-  nft: Bytes! # address
+  reactionRecipientAddress: Bytes! # address
   tokenId: BigInt!
   staked: [Stake!] @derivedFrom(field: "reaction")
   flowed: [Flow!] @derivedFrom(field: "reaction")

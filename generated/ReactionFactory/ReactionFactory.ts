@@ -116,6 +116,10 @@ export class ReactionDeployed__Params {
   get tokenMetadataURI(): string {
     return this._event.parameters[4].value.toString();
   }
+
+  get stakingTokenAddress(): Address {
+    return this._event.parameters[5].value.toAddress();
+  }
 }
 
 export class Upgraded extends ethereum.Event {
@@ -167,15 +171,17 @@ export class ReactionFactory extends ethereum.SmartContract {
   deployReaction(
     reactionTokenName: string,
     reactionTokenSymbol: string,
-    tokenMetadataURI: string
+    tokenMetadataURI: string,
+    stakingTokenAddress: Address
   ): Address {
     let result = super.call(
       "deployReaction",
-      "deployReaction(string,string,string):(address)",
+      "deployReaction(string,string,string,address):(address)",
       [
         ethereum.Value.fromString(reactionTokenName),
         ethereum.Value.fromString(reactionTokenSymbol),
-        ethereum.Value.fromString(tokenMetadataURI)
+        ethereum.Value.fromString(tokenMetadataURI),
+        ethereum.Value.fromAddress(stakingTokenAddress)
       ]
     );
 
@@ -185,16 +191,44 @@ export class ReactionFactory extends ethereum.SmartContract {
   try_deployReaction(
     reactionTokenName: string,
     reactionTokenSymbol: string,
-    tokenMetadataURI: string
+    tokenMetadataURI: string,
+    stakingTokenAddress: Address
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "deployReaction",
-      "deployReaction(string,string,string):(address)",
+      "deployReaction(string,string,string,address):(address)",
       [
         ethereum.Value.fromString(reactionTokenName),
         ethereum.Value.fromString(reactionTokenSymbol),
-        ethereum.Value.fromString(tokenMetadataURI)
+        ethereum.Value.fromString(tokenMetadataURI),
+        ethereum.Value.fromAddress(stakingTokenAddress)
       ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getStakedFlow(user: Address, token: Address): Address {
+    let result = super.call(
+      "getStakedFlow",
+      "getStakedFlow(address,address):(address)",
+      [ethereum.Value.fromAddress(user), ethereum.Value.fromAddress(token)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getStakedFlow(
+    user: Address,
+    token: Address
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getStakedFlow",
+      "getStakedFlow(address,address):(address)",
+      [ethereum.Value.fromAddress(user), ethereum.Value.fromAddress(token)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -331,12 +365,54 @@ export class DeployReactionCall__Inputs {
   get tokenMetadataURI(): string {
     return this._call.inputValues[2].value.toString();
   }
+
+  get stakingTokenAddress(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
 }
 
 export class DeployReactionCall__Outputs {
   _call: DeployReactionCall;
 
   constructor(call: DeployReactionCall) {
+    this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.outputValues[0].value.toAddress();
+  }
+}
+
+export class GetStakedFlowCall extends ethereum.Call {
+  get inputs(): GetStakedFlowCall__Inputs {
+    return new GetStakedFlowCall__Inputs(this);
+  }
+
+  get outputs(): GetStakedFlowCall__Outputs {
+    return new GetStakedFlowCall__Outputs(this);
+  }
+}
+
+export class GetStakedFlowCall__Inputs {
+  _call: GetStakedFlowCall;
+
+  constructor(call: GetStakedFlowCall) {
+    this._call = call;
+  }
+
+  get user(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get token(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class GetStakedFlowCall__Outputs {
+  _call: GetStakedFlowCall;
+
+  constructor(call: GetStakedFlowCall) {
     this._call = call;
   }
 

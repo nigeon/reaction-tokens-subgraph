@@ -15,6 +15,7 @@ export function handleReactionDeployed(event: ReactionDeployed): void {
   entity.contract = event.params.reactionContractAddr;
   entity.name = event.params.reactionTokenName;
   entity.symbol = event.params.reactionTokenSymbol;
+  entity.stakingTokenAddress = event.params.stakingTokenAddress;
   entity.save();
 
   let context = new DataSourceContext();
@@ -46,7 +47,7 @@ export function handleReacted(event: Reacted): void {
   entity.user = createUser(event.params.author).id;
   entity.reaction = reactionDef.id;
   entity.amount = event.params.amount;
-  entity.nft = event.params.nftAddress;
+  entity.reactionRecipientAddress = event.params.reactionRecipientAddress;
   entity.tokenId = event.params.tokenId;
   
   entity.save();

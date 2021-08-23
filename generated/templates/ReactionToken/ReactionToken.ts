@@ -87,7 +87,7 @@ export class Reacted__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get nftAddress(): Address {
+  get reactionRecipientAddress(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
@@ -279,6 +279,29 @@ export class ReactionToken extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  getStakingTokenAddress(): Address {
+    let result = super.call(
+      "getStakingTokenAddress",
+      "getStakingTokenAddress():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getStakingTokenAddress(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getStakingTokenAddress",
+      "getStakingTokenAddress():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   getTokenMetadataURI(): string {
     let result = super.call(
       "getTokenMetadataURI",
@@ -468,16 +491,20 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get reactionTokenName(): string {
-    return this._call.inputValues[3].value.toString();
+  get stakingTokenAddress(): Address {
+    return this._call.inputValues[3].value.toAddress();
   }
 
-  get reactionTokenSymbol(): string {
+  get reactionTokenName(): string {
     return this._call.inputValues[4].value.toString();
   }
 
-  get tokenMetadataURI(): string {
+  get reactionTokenSymbol(): string {
     return this._call.inputValues[5].value.toString();
+  }
+
+  get tokenMetadataURI(): string {
+    return this._call.inputValues[6].value.toString();
   }
 }
 
@@ -628,7 +655,7 @@ export class StakeAndMintCall__Inputs {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get nftAddress(): Address {
+  get reactionRecipientAddress(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 

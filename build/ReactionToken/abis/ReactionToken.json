@@ -17,6 +17,11 @@
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "stakingTokenAddress",
+        "type": "address"
+      },
+      {
         "internalType": "string",
         "name": "reactionTokenName",
         "type": "string"
@@ -109,7 +114,7 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "nftAddress",
+        "name": "reactionRecipientAddress",
         "type": "address"
       },
       {
@@ -302,6 +307,19 @@
   },
   {
     "inputs": [],
+    "name": "getStakingTokenAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getTokenMetadataURI",
     "outputs": [
       {
@@ -364,7 +382,7 @@
       },
       {
         "internalType": "address",
-        "name": "nftAddress",
+        "name": "reactionRecipientAddress",
         "type": "address"
       },
       {
