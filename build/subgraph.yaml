@@ -6,9 +6,9 @@ dataSources:
     name: ReactionFactory
     network: mumbai
     source:
-      address: "0x67b7184DbE8791EBC4dcD43fd9F51AaD4F14a79d"
+      address: "0x41EF8E922f446feADE5bdC91F02F4a7865f054a1"
       abi: ReactionFactory
-      startBlock: 17756686
+      startBlock: 18056018
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
